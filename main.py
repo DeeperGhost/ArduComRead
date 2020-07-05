@@ -8,13 +8,13 @@ def addData(h,t,PathFile):
     f.write(str(h)+";"+str(t)+";"+str(dt)+"\n")
     f.close()
 
-    # f = open(PathFile,'w')
-    # f.write(str(h) + ";" + str(t) + ";" + str(dt) + "\n")
-    # f.close()
+    f = open(PathFile,'w')
+    f.write(str(h) + ";" + str(t) + ";" + str(dt) + "\n")
+    f.close()
 
 def ON():
-    # comport = 'COM3' # for win
-    comport = '/dev/ttyACM0'
+    comport = 'COM3' # for win
+    # comport = '/dev/ttyACM0'
     fileForReadNow ='C:/Users/007/PycharmProjects/FlaskServTest/data/indicators.i'
     try:
         port = serial.Serial(comport,9600)
