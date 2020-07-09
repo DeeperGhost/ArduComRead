@@ -1,36 +1,58 @@
 import serial
 import datetime
+import os
+import platform
 
-def addData(h,t,PathFile):
-    dt = datetime.datetime.now()
+class ArduComRead:
+    # Путь для сохранения истории
+    __pathSaveData = ""
+    # Файл с последним значением данных
+    __indicatorNow = ""
+    # комп порт текущей ОС
+    __comport = ""
+    # словарь ком портов различных ОС
+    __os_switch_com = {"Linux": "/dev/ttyACM0",
+                       "Windows": "COM3",
+                       "Darwin": "/dev/tty.tty0"} #надо проверять работоспособность неизвестна
 
-    f = open("data/" + dt.strftime("%Y-%m-%d") + '.csv', 'a')
-    f.write(str(h)+";"+str(t)+";"+str(dt)+"\n")
-    f.close()
+    def __init__(self,pathSaveData="/data", indicatorFileNow=""):
+        self.__comport = self.__os_switch_com[platform.system()]
+        self.__pathSaveData = pathSaveData
 
-    f = open(PathFile,'w')
-    f.write(str(h) + ";" + str(t) + ";" + str(dt) + "\n")
-    f.close()
+        # если нет выделенного пути то сохранять рядом с общей базой
+        if indicatorFileNow == "":
+            self.__indicatorNow = os.path.abspath(os.curdir) + pathSaveData + "/indicators.i"
+        else:
+            self.__indicatorNow = indicatorFileNow
 
-def ON():
-    comport = 'COM3' # for win
-    # comport = '/dev/ttyACM0'
-    fileForReadNow ='C:/Users/007/PycharmProjects/FlaskServTest/data/indicators.i'
-    try:
-        port = serial.Serial(comport,9600)
-        while 1:
-            buf = str(port.readline())
-            addData(h=int(buf[3:5]), t=int(buf[7:9]), PathFile=fileForReadNow)
-            print(buf[2:9])
-        port.close()
 
-    except serial.SerialException:
-        print('Соединение не удалось')
-        exit(1)
+    def __SaveData(self,h,t):
+    #Сохраняет прочитаные данные в файлы
+        dt = datetime.datetime.now()
 
-def main():
-    ON()
+        f = open(self.__pathSaveData + dt.strftime("%Y-%m-%d") + '.csv', 'a')
+        f.write(str(h)+";"+str(t)+";"+str(dt)+"\n")
+        f.close()
+
+        f = open(self.__indicatorNow,'w')
+        f.write(str(h) + ";" + str(t) + ";" + str(dt) + "\n")
+        f.close()
+
+    def ON(self):
+        try:
+            port = serial.Serial(self.__comport,9600)
+            while 1:
+                buf = str(port.readline())
+                self.__SaveData(h=int(buf[3:5]), t=int(buf[7:9]))
+                print(buf[2:9])
+            port.close()
+
+        except serial.SerialException:
+            print('Соединение не удалось')
+            exit(1)
+
 
 
 if __name__ == "__main__":
-    main()
+    t = ArduComRead(indicatorFileNow="C:/Users/007/PycharmProjects/FlaskServTest/data/indicators.i")
+    t.ON()
