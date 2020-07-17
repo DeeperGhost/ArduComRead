@@ -1,7 +1,10 @@
 <application>
   <component name="FileTypeManager" version="17">
     <extensionMap>
+      <mapping pattern="README" type="PLAIN_TEXT" />
+      <mapping pattern="надо" type="PLAIN_TEXT" />
       <mapping pattern="Dockerfile" type="PLAIN_TEXT" />
+      <mapping ext="i" type="PLAIN_TEXT" />
     </extensionMap>
   </component>
 </application>
