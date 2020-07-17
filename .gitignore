@@ -1,4 +1,11 @@
 venv*
 data/*
+
 /.idea*
+_windows*
+codestyles*
+
 vcs.xml
+colors.scheme.xml
+debugger.xml
+filetypes.xml

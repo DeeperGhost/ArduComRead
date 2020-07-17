@@ -3,13 +3,14 @@ import datetime
 import os
 import platform
 
+
 class ArduComRead:
     # Путь для сохранения истории
-    __pathSaveData = ""
+    # __pathSaveData = ""
     # Файл с последним значением данных
-    __indicatorNow = ""
+    # __indicatorNow = ""
     # комп порт текущей ОС
-    __comport = ""
+    # __comport = ""
     # словарь ком портов различных ОС
     __os_switch_com = {"Linux": "/dev/ttyACM0",
                        "Windows": "COM3",
@@ -26,7 +27,7 @@ class ArduComRead:
             self.__indicatorNow = indicatorFileNow
 
 
-    def __SaveData(self,h,t):
+    def __save_data(self,h,t):
     #Сохраняет прочитаные данные в файлы
         dt = datetime.datetime.now()
 
@@ -38,12 +39,14 @@ class ArduComRead:
         f.write(str(h) + ";" + str(t) + ";" + str(dt) + "\n")
         f.close()
 
-    def ON(self):
+
+    def on(self):
+        # читает данные из ком порта и записывает в файлы
         try:
             port = serial.Serial(self.__comport,9600)
             while 1:
                 buf = str(port.readline())
-                self.__SaveData(h=int(buf[3:5]), t=int(buf[7:9]))
+                self.__save_data(h=int(buf[3:5]), t=int(buf[7:9]))
                 print(buf[2:9])
             port.close()
 
@@ -55,4 +58,7 @@ class ArduComRead:
 
 if __name__ == "__main__":
     t = ArduComRead(indicatorFileNow="C:/Users/007/PycharmProjects/FlaskServTest/data/indicators.i")
-    t.ON()
+    t.on()
+
+
+
