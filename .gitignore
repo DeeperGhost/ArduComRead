@@ -2,7 +2,8 @@ venv*
 data/*
 
 /.idea*
-_windows*
+_windows
+inspection
 codestyles*
 
 vcs.xml
