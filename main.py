@@ -55,10 +55,6 @@ class ArduComRead:
             exit(1)
 
 
-
 if __name__ == "__main__":
     t = ArduComRead(indicatorFileNow="C:/Users/007/PycharmProjects/FlaskServTest/data/indicators.i")
     t.on()
-
-
-
