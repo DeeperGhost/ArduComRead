@@ -9,3 +9,4 @@ vcs.xml
 colors.scheme.xml
 debugger.xml
 filetypes.xml
+*.xml
